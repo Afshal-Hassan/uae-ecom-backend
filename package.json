@@ -1,0 +1,11 @@
+{
+  "name": "uae-ecom-backend",
+  "version": "1.0.0",
+  "description": "This is uae ecommerce backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Afshal Hassan",
+  "license": "ISC"
+}
