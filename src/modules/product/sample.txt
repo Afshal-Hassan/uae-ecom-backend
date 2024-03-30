@@ -1,0 +1,22 @@
+saveProduct
+mySqlConnnection.query<OkPacket>(
+            "INSERT INTO products (title, description, image_url) VALUES(?,?,?)",
+            [product.title, product.description, product.imageUrl],
+            (err, res) => {
+                if (err) reject(err);
+                else getProductById(res.insertId)
+                    .then((tutorial) => resolve(tutorial!))
+                    .catch(reject);
+            }
+        );
+
+
+getProductById
+         mySqlConnnection.query<Product[]>(
+            "SELECT * FROM products WHERE id = ?",
+            [productId],
+            (err, res) => {
+                if (err) reject(err);
+                else resolve(res?.[0]);
+            }
+        );
