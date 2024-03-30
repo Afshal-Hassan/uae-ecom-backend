@@ -1,9 +1,11 @@
 import cors from "cors";
 import bodyParser from 'body-parser';
+import responseTime from "response-time";
 import { API_VERSION } from "./helpers/constants";
 import { errorHandler } from "./helpers/middlewares";
 import express, { Request, Response } from "express";
 import productController from "./modules/product/controller";
+import categoryController from "./modules/category/controller";
 
 const app = express();
 require("./db/database");
@@ -11,6 +13,7 @@ require("./redis/redis");
 
 //***************************   App uses    *************************
 
+app.use(responseTime());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
@@ -26,6 +29,7 @@ app.disable("x-powered-by");
 // Routes
 
 app.use(API_VERSION, productController);
+app.use(API_VERSION, categoryController);
 
 app.get("/api/hello", (req: Request, res: Response) => {
     res.send("App Running");

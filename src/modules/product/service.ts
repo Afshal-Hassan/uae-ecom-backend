@@ -26,17 +26,16 @@ export const getAllProducts = (): Promise<Product[]> => {
         const products: Product[] = [];
 
         redisClient.keys(PRODUCT_REDIS_KEY + "*")
-            .then(productKeys => {
-                productKeys.forEach(async productKey => {
+            .then(async productKeys => {
+
+                await Promise.all(productKeys.map(async productKey => {
                     const productId = productKey.split(":")[1];
                     const product = await getProductById(productId);
-                    if (product) {
-                        products.push(product);
-                    }
-                })
+                    if (product) products.push(product);
+                }));
+
+                resolve(products);
             })
             .catch(error => reject(error));
-
-        resolve(products);
     });
 }
