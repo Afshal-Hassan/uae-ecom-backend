@@ -1,5 +1,7 @@
+import { OkPacket } from "mysql2";
 import { Product } from "./models";
 import { redisClient } from "../../redis/redis";
+import mySqlConnnection from "../../db/database";
 import { PRODUCT_REDIS_KEY } from "../../helpers/constants";
 
 export const saveProduct = async (product: Product): Promise<Product> => {
@@ -37,5 +39,20 @@ export const getAllProducts = (): Promise<Product[]> => {
                 resolve(products);
             })
             .catch(error => reject(error));
+    });
+}
+
+export const saveAllProductsToDB = (products: Product[]): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        const productValues = products.map(product => [product.id, product.title, product.description, product.imageUrl]);
+
+        mySqlConnnection.query<OkPacket>(
+            "INSERT INTO products (id, title, description, image_url) VALUES ? ON DUPLICATE KEY UPDATE id = VALUES(id)",
+            [productValues],
+            (err, res) => {
+                if (err) reject(err);
+                else resolve();
+            }
+        );
     });
 }

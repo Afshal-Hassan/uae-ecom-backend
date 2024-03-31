@@ -5,7 +5,7 @@ export interface Product extends RowDataPacket {
     title: string,
     description: string,
     imageUrl: string,
-    categoryId: string
+    // categoryId: string
 }
 
 export interface ProductDto {

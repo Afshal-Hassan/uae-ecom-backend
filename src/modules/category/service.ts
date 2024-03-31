@@ -1,6 +1,7 @@
+import { OkPacket } from "mysql2";
 import { Category } from "./models";
 import { redisClient } from "../../redis/redis";
-import { BadRequest } from "../../helpers/exceptions";
+import mySqlConnnection from "../../db/database";
 import { CATEGORY_REDIS_KEY } from "../../helpers/constants";
 
 export const saveCategory = async (category: Category): Promise<Category> => {
@@ -43,5 +44,20 @@ export const getAllCategories = (): Promise<Category[]> => {
                 resolve(categories);
             })
             .catch(error => reject(error));
+    });
+}
+
+export const saveAllCategoriesToDB = (categories: Category[]): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        const categoryValues = categories.map(category => [category.id, category.name]);
+
+        mySqlConnnection.query<OkPacket>(
+            "INSERT INTO categories (id, name) VALUES ? ON DUPLICATE KEY UPDATE id = VALUES(id)",
+            [categoryValues],
+            (err, res) => {
+                if (err) reject(err);
+                else resolve();
+            }
+        );
     });
 }

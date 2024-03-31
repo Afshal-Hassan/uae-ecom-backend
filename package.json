@@ -4,7 +4,7 @@
   "description": "This is uae ecommerce backend",
   "main": "app.js",
   "scripts": {
-    "start": "node lib/app.js",
+    "start": "node lib/src/app.js",
     "build": "tsc",
     "dev": "nodemon src/app.ts",
     "test": "jest"
