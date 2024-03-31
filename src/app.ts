@@ -10,6 +10,7 @@ import categoryController from "./modules/category/controller";
 const app = express();
 require("./db/database");
 require("./redis/redis");
+require("./schedulers/database-scheduler");
 
 //***************************   App uses    *************************
 

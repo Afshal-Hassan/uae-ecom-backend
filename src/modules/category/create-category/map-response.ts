@@ -1,5 +1,5 @@
-import { GenericResponse } from "../../../helpers/internal-model";
 import { Category, CategoryDto } from "../models";
+import { GenericResponse } from "../../../helpers/internal-model";
 
 export const mapResponse = (category: Category): GenericResponse<CategoryDto> => {
     const categoryDto = getCategoryDto(category);

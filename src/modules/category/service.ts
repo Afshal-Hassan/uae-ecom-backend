@@ -8,7 +8,7 @@ export const saveCategory = async (category: Category): Promise<Category> => {
         const categories = await getAllCategories();
         const isCategoryExist = categories.find(c => c.name === category.name);
 
-        if (isCategoryExist) reject("Category already exists");
+        if (isCategoryExist) reject("Category must be unique, provided category name: " + category.name);
 
         redisClient.set(CATEGORY_REDIS_KEY + category.id, JSON.stringify(category))
             .then(() => resolve(category))
